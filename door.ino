@@ -220,16 +220,16 @@ void setMotorSpeed(int speed, bool reverse) { // speed between 0 and 255
         if(speed == 0) {
             // turn off the motor
             digitalWrite(MOTOR_PIN1, LOW);
-            digitalWrite(MOTOR_PIN1, LOW);
+            digitalWrite(MOTOR_PIN2, LOW);
         } else {
             if(!reverse) {
                 // run motor clockwise
+                digitalWrite(MOTOR_PIN2, LOW);
                 digitalWrite(MOTOR_PIN1, HIGH);
-                digitalWrite(MOTOR_PIN1, LOW);
             } else {
                 // run motor anti-clockwise
                 digitalWrite(MOTOR_PIN1, LOW);
-                digitalWrite(MOTOR_PIN1, HIGH);
+                digitalWrite(MOTOR_PIN2, HIGH);
             }
         }
     }
