@@ -15,7 +15,9 @@
 #define TOUCH_SENSOR_PIN 15
 
 // motor pin
-#define MOTOR_PIN 3
+#define MOTOR_PWM_PIN 2
+#define MOTOR_PIN1 3
+#define MOTOR_PIN2 4
 
 // init hc05 vars
 String msg;
@@ -39,20 +41,22 @@ void setup() {
     // digitalWrite(9,HIGH);
 
 
-    // init card bluetooth (one pin in auto one in out)
+    // init card bluetooth pins (one pin in auto one in out)
     pinMode(BT_RX_PIN, INPUT);
     pinMode(BT_TX_PIN, OUTPUT);
 
-    // init leds in output mode
+    // init leds pins in output mode
     pinMode(LED_MASTER_PIN, OUTPUT);
     pinMode(LED_SLAVE_PIN, OUTPUT);
     pinMode(LED_DETECT_PERSON_PIN, OUTPUT);
 
-    // init touch sensor in input mode
+    // init touch sensor pins in input mode
     pinMode(TOUCH_SENSOR_PIN, INPUT);
 
-    // init motor in output mode
-    pinMode(MOTOR_PIN, OUTPUT);
+    // init motor pins in output mode
+    pinMode(MOTOR_PWM_PIN, OUTPUT);
+    pinMode(MOTOR_PIN1, OUTPUT);
+    pinMode(MOTOR_PIN2, OUTPUT);
 
     // set hc05 rate
     hc05.begin(baudrate);
@@ -210,8 +214,24 @@ void setReservedState(int newValue) {
 
 /** Motor utils **/
 void setMotorSpeed(int speed, bool reverse) { // speed between 0 and 255
-    if (speed >= 0 && speed <= 255) {
-        analogWrite(motorPin, speed);
+    if(speed >= 0 && speed <= 255) {
+        analogWrite(MOTOR_PWM_PIN, speed); // controle the new motor speed
+
+        if(speed == 0) {
+            // turn off the motor
+            digitalWrite(MOTOR_PIN1, LOW);
+            digitalWrite(MOTOR_PIN1, LOW);
+        } else {
+            if(!reverse) {
+                // run motor clockwise
+                digitalWrite(MOTOR_PIN1, HIGH);
+                digitalWrite(MOTOR_PIN1, LOW);
+            } else {
+                // run motor anti-clockwise
+                digitalWrite(MOTOR_PIN1, LOW);
+                digitalWrite(MOTOR_PIN1, HIGH);
+            }
+        }
     }
 }
 
